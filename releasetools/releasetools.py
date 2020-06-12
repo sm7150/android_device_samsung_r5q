@@ -14,11 +14,14 @@
 # limitations under the License.
 
 import common
+import re
 
 def FullOTA_InstallEnd(info):
+  AddVendorAssertion(info, info.input_zip)
   OTA_InstallEnd(info)
 
 def IncrementalOTA_InstallEnd(info):
+  AddVendorAssertion(info, info.input_zip)
   OTA_InstallEnd(info)
 
 def AddImage(info, basename, dest):
@@ -37,3 +40,10 @@ def OTA_InstallEnd(info):
   info.script.AppendExtra(
       'package_extract_file("vbmeta.img", "/dev/block/bootdevice/by-name/vbmeta_samsung");'
    )
+
+def AddVendorAssertion(info, input_zip):
+    android_info = input_zip.read("OTA/android-info.txt")
+    m = re.search(r'require\s+vendor-spl\s*=\s*(.+)', android_info)
+    if m:
+        cmd = 'assert(r5q.verify_vspl("' + m.group(1).rstrip() + '") == "1");'
+        info.script.AppendExtra(cmd)
