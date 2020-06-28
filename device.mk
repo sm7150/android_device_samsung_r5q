@@ -77,8 +77,7 @@ PRODUCT_PACKAGES += \
 # Recovery
 PRODUCT_PACKAGES += \
     fastbootd \
-    init.recovery.qcom.rc \
-    librecovery_updater_r5q
+    init.recovery.qcom.rc
 
 # SamsungDoze
 PRODUCT_PACKAGES += \
