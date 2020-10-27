@@ -4,12 +4,9 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-DEVICE_PATH := device/samsung/r5q
+DEVICE_PATH := device/samsung/m51
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
-
-# Call the proprietary setup
-$(call inherit-product, vendor/samsung/r5q/r5q-vendor.mk)
 
 # Enable updating of APEXes
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
@@ -27,7 +24,7 @@ DEVICE_PACKAGE_OVERLAYS += \
 # No A/B
 AB_OTA_UPDATER := false
 
-# Audio 
+# Audio
 PRODUCT_PACKAGES += \
     audio.a2dp.default
 
@@ -38,25 +35,21 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     Snap
 
+# Skip Mount
+PRODUCT_COPY_FILES += \
+    build/target/product/gsi/skip_mount.cfg:$(TARGET_COPY_OUT_SYSTEM)/etc/init/config/skip_mount.cfg
+
 # Fingerprint feature
 PRODUCT_PACKAGES += \
-    lineage.biometrics.fingerprint.inscreen@1.0-service.r5q
+    lineage.biometrics.fingerprint.inscreen@1.0-service.m51
 
 PRODUCT_COPY_FILES += \
     vendor/lineage/config/permissions/vendor.lineage.biometrics.fingerprint.inscreen.xml:system/etc/permissions/vendor.lineage.biometrics.fingerprint.inscreen.xml
-
-# HotwordEnrollement app permissions
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/privapp-permissions-hotword.xml:system/etc/permissions/privapp-permissions-hotword.xml
 
 # Init
 PRODUCT_PACKAGES += \
     fstab.qcom \
     init.qcom.rc
-
-# Keylayout
-PRODUCT_COPY_FILES += \
-    device/samsung/r5q/keylayout/gpio-keys.kl:$(TARGET_COPY_OUT_SYSTEM)/usr/keylayout/gpio-keys.kl
 
 # NFC
 PRODUCT_PACKAGES += \
@@ -66,12 +59,9 @@ PRODUCT_PACKAGES += \
     Tag \
     com.android.nfc_extras
 
-# Power
+# Lights
 PRODUCT_PACKAGES += \
-    android.hardware.power@1.3-service.r5q
-
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.json
+    android.hardware.light@2.0-service.m51
 
 # Recovery
 PRODUCT_PACKAGES += \
@@ -84,7 +74,7 @@ PRODUCT_PACKAGES += \
 
 # Sensors
 PRODUCT_PACKAGES += \
-    android.hardware.sensors@1.0-impl.r5q
+    android.hardware.sensors@1.0-impl.m51
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
